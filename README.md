@@ -6,3 +6,6 @@ este repositorio contiene el código para la prueba de cargo de la empresa evert
 v1.0
 
 aplicación hecha en spring boot 
+
+
+video demostración: https://youtu.be/KIG6VoP2f2g
