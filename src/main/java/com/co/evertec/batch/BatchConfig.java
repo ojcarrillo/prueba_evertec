@@ -88,21 +88,21 @@ public class BatchConfig {
                 .get("step")
                 .transactionManager(transactionManager)
                 .<DeudaCliente, DeudaCliente>chunk(CANTIDAD_REGISTRO_CHUNK)
-                .reader(archivoReader())
-                .processor(processor())
-                .writer(writer())
+                .reader(leerArchivo())
+                .processor(procesarDatos())
+                .writer(almacenarRegistroBD())
                 .build();
     }
      
     /* configuracion log de los objetos leidos */
     @Bean
-    public ItemProcessor<DeudaCliente, DeudaCliente> processor() {
+    public ItemProcessor<DeudaCliente, DeudaCliente> procesarDatos() {
         return new LogProcessor();
     }
      
     /* configuracion lector de registros */
     @Bean
-    public FlatFileItemReader<DeudaCliente> archivoReader() throws IOException {
+    public FlatFileItemReader<DeudaCliente> leerArchivo() throws IOException {
     	PathResource path = new PathResource(archivoFuente);
         FlatFileItemReader<DeudaCliente> itemReader = new FlatFileItemReader<DeudaCliente>();
         itemReader.setLineMapper(lineMapper());
@@ -161,7 +161,7 @@ public class BatchConfig {
  
     /* guarda el registro de la deuda en la base usando jpa */
     @Bean 
-    public ItemWriter<DeudaCliente> writer() { 
+    public ItemWriter<DeudaCliente> almacenarRegistroBD() { 
         JpaItemWriter writer = new JpaItemWriter<DeudaCliente>(); 
         writer.setEntityManagerFactory(entityManagerDestino.getEntityManagerFactory());
         return writer; 
